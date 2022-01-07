@@ -7,6 +7,7 @@ import 'package:mobile_lander/src/utils/navigator_utils.dart';
 import 'package:mobile_lander/src/utils/spUtils.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'WelcomePage.dart';
 import 'page/common/permisson_request_widget.dart';
 
 class IndexPage extends StatefulWidget {
@@ -81,5 +82,7 @@ class _IndexPageState extends State with ProtocolModel {
     SystemChannels.platform.invokeMethod("SystemNavigator.pop");
   }
 
-  void next() {}
+  void next() {
+    NavigatorUtils.pushPageByFade(context: context, targetPage: WelcomePage(),isReplace: true);
+  }
 }
