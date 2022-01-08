@@ -73,7 +73,7 @@ class _VideoDetailWidgetState extends State<VideoDetailWidget> {
                   onTap: () {
                     if (_controller.value.isPlaying) {
                       stopVideo();
-                      if(_timer.isActive){
+                      if (_timer.isActive) {
                         _timer.cancel();
                       }
                     } else {
@@ -86,11 +86,28 @@ class _VideoDetailWidgetState extends State<VideoDetailWidget> {
                       });
                     }
                   },
-                  child: Icon(
-                    _controller.value.isPlaying
-                        ? Icons.pause
-                        : Icons.play_circle_fill,
-                    size: 44,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      ClipOval(
+                        child: Container(
+                          width: 54,
+                          height: 54,
+                          decoration: BoxDecoration(
+                              gradient: RadialGradient(colors: [
+                            Colors.black,
+                            Colors.black.withOpacity(0.3)
+                          ])),
+                          child: Icon(
+                            _controller.value.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow_sharp,
+                            size: 33,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -134,14 +151,18 @@ class _VideoDetailWidgetState extends State<VideoDetailWidget> {
         setState(() {});
       });
 
+    //视频播放器的监听器 实时更新
     _controller.addListener(() {
       if (_isPlay && !_controller.value.isPlaying) {
         _isPlay = false;
         setState(() {});
       }
 
+      //视屏播放的当前进度
       Duration currDuration = _controller.value.position;
+      //视频的总时长
       Duration totalDuration = _controller.value.duration;
+      //进度条的当前进度值
       _currentSlider =
           currDuration.inMilliseconds / totalDuration.inMilliseconds;
       setState(() {});
@@ -174,12 +195,17 @@ class _VideoDetailWidgetState extends State<VideoDetailWidget> {
     //开始播放
     _controller.play();
     _isPlay = true;
+    _isFirst = false;
     setState(() {});
   }
 
   double _currentSlider = 0.0;
+  bool _isFirst = true;
 
   buildBottomController() {
+    if (_isFirst) {
+      return Container();
+    }
     return Row(
       children: [
         Text(
