@@ -7,6 +7,7 @@ import 'package:mobile_lander/src/utils/navigator_utils.dart';
 import 'package:mobile_lander/src/utils/spUtils.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'FirstGuildPage.dart';
 import 'WelcomePage.dart';
 import 'page/common/permisson_request_widget.dart';
 
@@ -82,7 +83,17 @@ class _IndexPageState extends State with ProtocolModel {
     SystemChannels.platform.invokeMethod("SystemNavigator.pop");
   }
 
-  void next() {
-    NavigatorUtils.pushPageByFade(context: context, targetPage: WelcomePage(),isReplace: true);
+  void next() async{
+    //判断是否第一次安装应用
+    bool? isFirstInstall = await SPUtils.getBool("isFirstInstall");
+    if(isFirstInstall==null){
+      //第一次安装进入
+      // 引导页面
+      NavigatorUtils.pushPageByFade(
+          context: context, targetPage: FirstGuildPage(), isReplace: true);
+    }else {
+      NavigatorUtils.pushPageByFade(
+          context: context, targetPage: WelcomePage(), isReplace: true);
+    }
   }
 }
