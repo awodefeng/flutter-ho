@@ -165,7 +165,9 @@ class _VideoDetailWidgetState extends State<VideoDetailWidget> {
       //进度条的当前进度值
       _currentSlider =
           currDuration.inMilliseconds / totalDuration.inMilliseconds;
-      setState(() {});
+      if (_opacity == 1.0) {
+        _streamController.add(0);
+      }
     });
   }
 
@@ -173,6 +175,10 @@ class _VideoDetailWidgetState extends State<VideoDetailWidget> {
   void dispose() {
     // TODO: implement dispose
     _controller.dispose();
+    _streamController.close();
+    if (_timer.isActive) {
+      _timer.cancel();
+    }
     super.dispose();
   }
 
@@ -201,42 +207,48 @@ class _VideoDetailWidgetState extends State<VideoDetailWidget> {
 
   double _currentSlider = 0.0;
   bool _isFirst = true;
+  StreamController<int> _streamController = new StreamController();
 
   buildBottomController() {
     if (_isFirst) {
       return Container();
     }
-    return Row(
-      children: [
-        Text(
-          buildStartText(),
-          style: TextStyle(fontSize: 14, color: Colors.white),
-        ),
-        Expanded(
-          child: Slider(
-            //滑动条当前进度
-            value: _currentSlider,
-            //滑动条滑动时的回调
-            onChanged: (value) {
-              setState(() {
-                _currentSlider = value;
-                //控制视频
-                _controller.seekTo(_controller.value.duration * value);
-              });
-            },
-            min: 0.0,
-            max: 1.0,
-            //滑动条背景色
-            inactiveColor: Colors.white,
-            //滑动条前景色
-            activeColor: Colors.redAccent,
-          ),
-        ),
-        Text(
-          buildTotalText(),
-          style: TextStyle(fontSize: 14, color: Colors.white),
-        )
-      ],
+    return StreamBuilder(
+      stream: _streamController.stream,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return Row(
+          children: [
+            Text(
+              buildStartText(),
+              style: TextStyle(fontSize: 14, color: Colors.white),
+            ),
+            Expanded(
+              child: Slider(
+                //滑动条当前进度
+                value: _currentSlider,
+                //滑动条滑动时的回调
+                onChanged: (value) {
+                  setState(() {
+                    _currentSlider = value;
+                    //控制视频
+                    _controller.seekTo(_controller.value.duration * value);
+                  });
+                },
+                min: 0.0,
+                max: 1.0,
+                //滑动条背景色
+                inactiveColor: Colors.white,
+                //滑动条前景色
+                activeColor: Colors.redAccent,
+              ),
+            ),
+            Text(
+              buildTotalText(),
+              style: TextStyle(fontSize: 14, color: Colors.white),
+            )
+          ],
+        );
+      },
     );
   }
 
