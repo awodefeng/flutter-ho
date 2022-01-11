@@ -48,6 +48,7 @@ class NavigatorUtils {
       required Widget targetPage,
       bool isReplace = false,
       bool opaque = false,
+      int startMills = 400,
       Function(dynamic value)? dismissCallBack}) {
     PageRoute pageRoute = PageRouteBuilder(
         opaque: opaque,
@@ -55,6 +56,7 @@ class NavigatorUtils {
             Animation<double> secondaryAnimation) {
           return targetPage;
         },
+        transitionDuration: Duration(milliseconds: startMills),
         //动画
         transitionsBuilder: (BuildContext context, Animation<double> animation,
             Animation<double> secondaryAnimation, Widget child) {

@@ -74,10 +74,10 @@ class SPUtils {
   //保存列表数据
   static Future<bool> putObjectList(String key, List<Object> list) {
 //讲object转为String
-    List<String>? _dataList = list?.map((value) {
+    List<String> _dataList = list.map((value) {
       return json.encode(value);
-    })?.toList();
-    return _sharedPreferences.setStringList(key, _dataList!);
+    }).toList();
+    return _sharedPreferences.setStringList(key, _dataList);
   }
 
   //获取对象集合数据

@@ -40,6 +40,14 @@ dependencies:
   shared_preferences: ^2.0.11
   video_player: ^2.2.10
 
+  #toast 消息提示小弹框
+  fluttertoast: ^8.0.8
+
+  #App版本信息
+  package_info: ^2.0.2
+  #用来加载网络数据
+  dio: 3.0.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

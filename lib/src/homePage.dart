@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_lander/src/page/home/HomeItemPage.dart';
+import 'package:mobile_lander/src/page/mine/MineMainPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
             HomeItemPage(1),
             HomeItemPage(2),
             HomeItemPage(3),
-            HomeItemPage(4),
+            MineMainPage(),
           ],
         ),
       ),
